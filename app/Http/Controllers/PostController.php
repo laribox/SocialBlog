@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use App\Models\User;
 
 class PostController extends Controller
 {
@@ -13,7 +14,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        return view('posts.index')->with('posts', auth()->user()->posts );
     }
 
     /**
@@ -21,7 +22,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('posts.create');
     }
 
     /**
@@ -29,7 +30,14 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        //
+        $request->image->move(public_path('images'), "{$request->image->getClientOriginalName()}");
+        $post = new Post();
+        $post->title = $request->title;
+        $post->body = $request->body;
+        $post->image = asset('images')."/". $request->image->getClientOriginalName();
+        $post->user_id = auth()->user()->id;
+        $post->save();
+        return redirect('/posts');
     }
 
     /**
@@ -37,7 +45,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return view('posts.show')->with('post', $post);
     }
 
     /**
@@ -45,7 +53,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        return view('posts.edit')->with('post', $post);
     }
 
     /**
