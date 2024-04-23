@@ -25,6 +25,10 @@ class PostController extends Controller
         return view('posts.create');
     }
 
+    public function list(){
+        return view('posts.list')->with('posts', Post::all());
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -45,7 +49,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return view('posts.show')->with('post', $post);
+        return view('posts.show')->with('post', $post)->with('comments', $post->comments->sortbyDesc('created_at'));
     }
 
     /**

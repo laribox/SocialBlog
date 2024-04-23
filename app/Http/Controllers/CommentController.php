@@ -13,15 +13,8 @@ class CommentController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $comments = Comment::all();
+        return response()->json($comments);
     }
 
     /**
@@ -29,7 +22,12 @@ class CommentController extends Controller
      */
     public function store(StoreCommentRequest $request)
     {
-        //
+        $comment = new Comment();
+        $comment->body = $request->body;
+        $comment->post_id = $request->post_id;
+        $comment->user_id =  $request->user_id;
+        $comment->save();
+        return response()->json([$comment,$comment->user]);
     }
 
     /**
@@ -37,23 +35,19 @@ class CommentController extends Controller
      */
     public function show(Comment $comment)
     {
-        //
+
+        return response()->json($comment);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Comment $comment)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdateCommentRequest $request, Comment $comment)
     {
-        //
+        $comment->body = $request->body;
+        $comment->save();
+        return response()->json($comment);
     }
 
     /**
@@ -61,6 +55,7 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        //
+        $comment->delete();
+        return response()->json($comment);
     }
 }

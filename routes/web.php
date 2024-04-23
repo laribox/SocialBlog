@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,3 +21,7 @@ Route::get('/dashboard', function () {
 
 
 Route::resource('posts', PostController::class)->middleware('auth');
+
+
+Route::get('chat',[ChatController::class,'index'])->name('chat.index')->middleware('auth');
+Route::post('chat',[ChatController::class,'dispatch'])->name('chat.dispatch');
