@@ -14,7 +14,10 @@ class PostController extends Controller
      */
     public function index()
     {
-        return view('posts.index')->with('posts', auth()->user()->posts );
+        if(request('search')){
+            return view('posts.index',['posts' => auth()->user()->posts()->search(request('search'))->latest()->paginate(5)]) ;
+        }
+        return view('posts.index',['posts' => auth()->user()->posts()->latest()->paginate(5)]) ;
     }
 
     /**
